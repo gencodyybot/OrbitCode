@@ -1,0 +1,36 @@
+name: Deploy OrbitCode Frontend to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Change this to master if your main branch is named master
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Monorepo Dependencies
+        run: npm install
+
+      - name: Build React Client
+        run: |
+          cd client
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # This matches your vite config outDir
+          branch: gh-pages
