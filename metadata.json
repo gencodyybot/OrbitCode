@@ -1,0 +1,6 @@
+{
+  "name": "OrbitCode",
+  "description": "A real-time collaborative online code editor for simultaneous multi-user programming.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
