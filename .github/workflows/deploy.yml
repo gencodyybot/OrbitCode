@@ -20,9 +20,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Bypass npm Bug and Force Clean Linux Install
+      - name: Clean Root Workspace Install
         run: |
-          cd client
           rm -rf node_modules package-lock.json
           npm install --include=optional
 
@@ -34,5 +33,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist # This stays 'dist' because your vite config outputs to '../dist'
+          folder: dist
           branch: gh-pages
