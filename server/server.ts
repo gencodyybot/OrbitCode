@@ -63,7 +63,7 @@ async function startServer() {
   const app = express();
   app.use(express.json({ limit: '10mb' }));
   const server = http.createServer(app);
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   // Set up raw WebSocket Server attached to the shared HTTP server on port 3000
   const wss = new WebSocketServer({ noServer: true });
