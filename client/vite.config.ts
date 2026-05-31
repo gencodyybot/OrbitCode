@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/OrbitCode/',
+    base: './', 
     root: path.resolve(__dirname),
     plugins: [react(), tailwindcss()],
     resolve: {
