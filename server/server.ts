@@ -11,10 +11,6 @@ import pkg from 'y-websocket/bin/utils';
 
 const { setupWSConnection, setContentInitializor } = pkg;
 
-// ES Module compatible pathname derivatives
-const resolvedFilename = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
-const resolvedDirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(resolvedFilename);
-
 // Track debounced DB writes to avoid disk saturation on high-frequency keystrokes
 const saveDebounceMap = new Map<string, NodeJS.Timeout>();
 
@@ -146,7 +142,7 @@ async function startServer() {
 
   // Vite middleware integration for high-productivity reactive DX
   if (process.env.NODE_ENV !== 'production') {
-    const viteRootPath = path.resolve(resolvedDirname, '../client');
+    const viteRootPath = path.join(process.cwd(), 'client');
     console.log(`Setting up Vite dev middleware with root: ${viteRootPath}`);
     
     const viteInstance = await createViteServer({
@@ -158,7 +154,7 @@ async function startServer() {
     // Handle deep workspace room path fallbacks with transformIndexHtml integration
     app.get('/room/*', async (req, res, next) => {
       try {
-        const indexHtmlPath = path.resolve(resolvedDirname, '../client/index.html');
+        const indexHtmlPath = path.join(process.cwd(), 'client/index.html');
         const fs = await import('fs');
         let html = fs.readFileSync(indexHtmlPath, 'utf-8');
         html = await viteInstance.transformIndexHtml(req.originalUrl, html);
@@ -171,7 +167,7 @@ async function startServer() {
     app.use(viteInstance.middlewares);
   } else {
     // In production, serve bundled client static assets directly from the shared build dist
-    const distPath = path.resolve(resolvedDirname, '../dist');
+    const distPath = path.join(process.cwd(), 'dist');
     console.log(`Setting up static asset serving from prod build directory: ${distPath}`);
     app.use(express.static(distPath));
     
