@@ -1,16 +1,13 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const resolvedFilename = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
-const resolvedDirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(resolvedFilename);
-
-const DB_DIR = path.join(resolvedDirname, 'rooms_data');
+const DB_DIR = path.join(process.cwd(), 'server', 'rooms_data');
 
 // Ensure DB directory exists
 fs.mkdir(DB_DIR, { recursive: true }).catch(err => {
   console.error('Failed to create rooms_data directory', err);
 });
+
 /**
  * Loads the binary state update buffer for a given room.
  */
@@ -103,4 +100,3 @@ export async function getSnapshotContent(roomId: string, snapshotId: string): Pr
     throw err;
   }
 }
-
